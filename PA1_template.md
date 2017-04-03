@@ -30,7 +30,7 @@ p <- ggplot(mdata.group_by_date, aes(date, steps)) + geom_histogram(stat = "iden
 plot(p)
 ```
 
-![](PA1_template_files/figure-markdown_github/step2-1.png)
+![](/figure-markdown_github/step2-1.png)
 
 Step 3: Mean and median number of steps
 ---------------------------------------
@@ -54,7 +54,7 @@ p <- ggplot(mdata.group_by_interval,
 plot(p)
 ```
 
-![](PA1_template_files/figure-markdown_github/step4-1.png)
+![](/figure-markdown_github/step4-1.png)
 
 Step 5: The 5-minute interval that, on average, contains the maximum number of steps
 ------------------------------------------------------------------------------------
@@ -104,7 +104,7 @@ p <- ggplot(newdata.group_by_date, aes(date, steps)) + geom_histogram(stat = "id
 plot(p)
 ```
 
-![](PA1_template_files/figure-markdown_github/step7-1.png)
+![](figure-markdown_github/step7-1.png)
 
 Step 8: Panel plot comparing the average number of steps taken per 5-minute interval across weekdays and weekends
 -----------------------------------------------------------------------------------------------------------------
@@ -136,4 +136,4 @@ p <- ggplot(newdata.group_by_interval,
 plot(p)
 ```
 
-![](PA1_template_files/figure-markdown_github/step8-1.png)
+![](figure-markdown_github/step8-1.png)
