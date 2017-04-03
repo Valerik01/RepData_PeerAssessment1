@@ -1,12 +1,12 @@
-# ---
-# title: "Coursera"
-# author: Val
-# date: March 22, 2017
-# output:
-#   md_document:
-#     variant: markdown_github
-# ---
-
+---
+title: "Coursera"
+author: Val
+date: March 22, 2017
+output:
+  md_document:
+    variant: markdown_github
+---
+ 
 ## Coursera, reproducible research, week 2
 
 ## Step 1: Read csv and convert to convenient format
@@ -41,6 +41,8 @@ plot(p)
 ```{r step3, echo=TRUE}
 mmean <- mean(mdata.group_by_date$steps, na.rm = TRUE)
 median <- median(mdata.group_by_date$steps, na.rm = TRUE)
+mmean
+median
 ```
 
 
@@ -61,8 +63,11 @@ plot(p)
 max.int <- which(mdata.group_by_interval$steps == max(mdata.group_by_interval$steps))
 mdata.group_by_interval[max.int,]
 ```
+We could see that interval num 835 has max steps (~206)
 
 ## Step 6: Code to describe and show a strategy for imputing missing data
+Missing values are replaced by average values from intervals
+
 ```{r step6, echo=TRUE}
 count.na <- sum(is.na(mdata$steps))
 
@@ -77,6 +82,7 @@ newdata <- newdata[with(newdata, order(date, interval)), ]
 ```
 
 ## Step 7: Histogram of the total number of steps taken each day after missing values are imputed
+
 ```{r step7, echo=TRUE}
 newdata.group_by_date <- newdata%>%
   group_by(date)%>% 
@@ -89,6 +95,7 @@ plot(p)
 ```
 
 ## Step 8: Panel plot comparing the average number of steps taken per 5-minute interval across weekdays and weekends
+
 ```{r step8, echo=TRUE}
 Sys.setlocale("LC_TIME", "English")
 newdata$weekdesc <- as.factor(ifelse(weekdays(newdata[,"date"]) %in% c("Saturday", "Sunday"), "weekend", "weekday"))

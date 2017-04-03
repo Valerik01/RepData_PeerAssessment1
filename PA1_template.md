@@ -30,7 +30,7 @@ p <- ggplot(mdata.group_by_date, aes(date, steps)) + geom_histogram(stat = "iden
 plot(p)
 ```
 
-![](/figure-markdown_github/step2-1.png)
+![](PA1_template_files/figure-markdown_github/step2-1.png)
 
 Step 3: Mean and median number of steps
 ---------------------------------------
@@ -38,7 +38,16 @@ Step 3: Mean and median number of steps
 ``` r
 mmean <- mean(mdata.group_by_date$steps, na.rm = TRUE)
 median <- median(mdata.group_by_date$steps, na.rm = TRUE)
+mmean
 ```
+
+    ## [1] 9354.23
+
+``` r
+median
+```
+
+    ## [1] 10395
 
 Step 4: Time series plot of the average number of steps taken
 -------------------------------------------------------------
@@ -54,7 +63,7 @@ p <- ggplot(mdata.group_by_interval,
 plot(p)
 ```
 
-![](/figure-markdown_github/step4-1.png)
+![](PA1_template_files/figure-markdown_github/step4-1.png)
 
 Step 5: The 5-minute interval that, on average, contains the maximum number of steps
 ------------------------------------------------------------------------------------
@@ -69,8 +78,12 @@ mdata.group_by_interval[max.int,]
     ##      <int>    <dbl>
     ## 1      835 206.1698
 
+We could see that interval num 835 has max steps (~206)
+
 Step 6: Code to describe and show a strategy for imputing missing data
 ----------------------------------------------------------------------
+
+Missing values are replaced by average values from intervals
 
 ``` r
 count.na <- sum(is.na(mdata$steps))
@@ -104,7 +117,7 @@ p <- ggplot(newdata.group_by_date, aes(date, steps)) + geom_histogram(stat = "id
 plot(p)
 ```
 
-![](figure-markdown_github/step7-1.png)
+![](PA1_template_files/figure-markdown_github/step7-1.png)
 
 Step 8: Panel plot comparing the average number of steps taken per 5-minute interval across weekdays and weekends
 -----------------------------------------------------------------------------------------------------------------
@@ -136,4 +149,4 @@ p <- ggplot(newdata.group_by_interval,
 plot(p)
 ```
 
-![](figure-markdown_github/step8-1.png)
+![](PA1_template_files/figure-markdown_github/step8-1.png)
