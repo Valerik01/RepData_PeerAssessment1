@@ -1,23 +1,10 @@
-# ---
-# title: "Coursera"
-# author: Val
-# date: March 22, 2017
-# output:
-#   md_document:
-#     variant: markdown_github
-# ---
+Coursera, reproducible research, week 2
+---------------------------------------
 
-## Coursera, reproducible research, week 2
+Step 1: Read csv and convert to convenient format
+-------------------------------------------------
 
-## Step 1: Read csv and convert to convenient format
-
-```{r step0, echo=FALSE, include=FALSE}
-library(dplyr)
-library(ggplot2)
-library(lubridate)
-```
-
-```{r step1, echo=TRUE}
+``` r
 mdata <- read.csv("./data/activity.csv", stringsAsFactors = FALSE, header = TRUE) 
 mdata$steps <- as.numeric(mdata$steps)
 mdata$date <- as.Date(mdata$date, "%Y-%m-%d")
@@ -28,24 +15,35 @@ mdata.group_by_date <- mdata%>%
   summarise(steps = sum(steps, na.rm = TRUE))
 ```
 
+Step 2: histogram of the total number of steps per day
+------------------------------------------------------
 
-## Step 2: histogram of the total number of steps per day
-```{r step2, echo=TRUE}
+``` r
 p <- ggplot(mdata.group_by_date, aes(date, steps)) + geom_histogram(stat = "identity", na.rm = TRUE) + 
       geom_hline(aes(yintercept = mean(mdata.group_by_date$steps), colour = "red")) + 
       guides(color = guide_legend(title = "mean"))
+```
+
+    ## Warning: Ignoring unknown parameters: binwidth, bins, pad
+
+``` r
 plot(p)
 ```
 
-## Step 3: Mean and median number of steps
-```{r step3, echo=TRUE}
+![](PA1_template_files/figure-markdown_github/step2-1.png)
+
+Step 3: Mean and median number of steps
+---------------------------------------
+
+``` r
 mmean <- mean(mdata.group_by_date$steps, na.rm = TRUE)
 median <- median(mdata.group_by_date$steps, na.rm = TRUE)
 ```
 
+Step 4: Time series plot of the average number of steps taken
+-------------------------------------------------------------
 
-## Step 4: Time series plot of the average number of steps taken
-```{r step4, echo=TRUE}
+``` r
 mdata.group_by_interval <- mdata%>%
   group_by(interval)%>%
   summarise(steps = mean(steps, na.rm = TRUE))
@@ -56,14 +54,25 @@ p <- ggplot(mdata.group_by_interval,
 plot(p)
 ```
 
-## Step 5: The 5-minute interval that, on average, contains the maximum number of steps
-```{r step5, echo=TRUE}
+![](PA1_template_files/figure-markdown_github/step4-1.png)
+
+Step 5: The 5-minute interval that, on average, contains the maximum number of steps
+------------------------------------------------------------------------------------
+
+``` r
 max.int <- which(mdata.group_by_interval$steps == max(mdata.group_by_interval$steps))
 mdata.group_by_interval[max.int,]
 ```
 
-## Step 6: Code to describe and show a strategy for imputing missing data
-```{r step6, echo=TRUE}
+    ## # A tibble: 1 <U+00D7> 2
+    ##   interval    steps
+    ##      <int>    <dbl>
+    ## 1      835 206.1698
+
+Step 6: Code to describe and show a strategy for imputing missing data
+----------------------------------------------------------------------
+
+``` r
 count.na <- sum(is.na(mdata$steps))
 
 # New dataset, without NA - mean by intervals
@@ -76,8 +85,10 @@ newdata <- newdata[, !names(newdata) == "steps.y"]
 newdata <- newdata[with(newdata, order(date, interval)), ]
 ```
 
-## Step 7: Histogram of the total number of steps taken each day after missing values are imputed
-```{r step7, echo=TRUE}
+Step 7: Histogram of the total number of steps taken each day after missing values are imputed
+----------------------------------------------------------------------------------------------
+
+``` r
 newdata.group_by_date <- newdata%>%
   group_by(date)%>% 
   summarise(steps = sum(steps))
@@ -85,14 +96,35 @@ newdata.group_by_date <- newdata%>%
 p <- ggplot(newdata.group_by_date, aes(date, steps)) + geom_histogram(stat = "identity", na.rm = TRUE) + 
   geom_hline(aes(yintercept = mean(newdata.group_by_date$steps), colour = "red")) + 
   guides(color = guide_legend(title = "mean"))
+```
+
+    ## Warning: Ignoring unknown parameters: binwidth, bins, pad
+
+``` r
 plot(p)
 ```
 
-## Step 8: Panel plot comparing the average number of steps taken per 5-minute interval across weekdays and weekends
-```{r step8, echo=TRUE}
+![](PA1_template_files/figure-markdown_github/step7-1.png)
+
+Step 8: Panel plot comparing the average number of steps taken per 5-minute interval across weekdays and weekends
+-----------------------------------------------------------------------------------------------------------------
+
+``` r
 Sys.setlocale("LC_TIME", "English")
+```
+
+    ## [1] "English_United States.1252"
+
+``` r
 newdata$weekdesc <- as.factor(ifelse(weekdays(newdata[,"date"]) %in% c("Saturday", "Sunday"), "weekend", "weekday"))
 table(newdata$weekdesc)
+```
+
+    ## 
+    ## weekday weekend 
+    ##   12960    4608
+
+``` r
 newdata.group_by_interval <- newdata%>%
   group_by(interval, weekdesc)%>%
   summarise(steps = mean(steps))
@@ -103,3 +135,5 @@ p <- ggplot(newdata.group_by_interval,
     facet_grid(weekdesc ~ .)
 plot(p)
 ```
+
+![](PA1_template_files/figure-markdown_github/step8-1.png)
